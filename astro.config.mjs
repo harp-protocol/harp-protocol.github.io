@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+import starlightBlog from "starlight-blog";
 import { viewTransitions } from "astro-vtbot/starlight-view-transitions";
 
 import tailwindcss from "@tailwindcss/vite";
@@ -25,6 +26,7 @@ export default defineConfig({
   },
   integrations: [
     starlight({
+      plugins: [starlightBlog()],
       title,
       favicon: "/favicon.png",
       logo: {

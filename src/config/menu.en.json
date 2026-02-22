@@ -62,6 +62,10 @@
       ]
     },
     {
+      "name": "Blog",
+      "url": "/blog/"
+    },
+    {
       "name": "Contact",
       "url": "/company/contact/"
     }
