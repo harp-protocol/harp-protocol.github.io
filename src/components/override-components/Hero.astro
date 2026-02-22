@@ -27,6 +27,9 @@ const is404 = Astro.locals.starlightRoute?.id === "404";
   {
     !is404 && (
       <div class="mt-12 max-w-4xl">
+        <p class="harp-acronym-banner">
+          <span class="harp-acronym-highlight">HARP</span> is the <span class="harp-acronym-highlight">H</span>uman <span class="harp-acronym-highlight">A</span>uthorization &amp; <span class="harp-acronym-highlight">R</span>eview <span class="harp-acronym-highlight">P</span>rotocol
+        </p>
         <div class="search-container rounded-2xl p-2 mb-6">
           <div class="search-bar">
             <Search />
@@ -97,6 +100,27 @@ const is404 = Astro.locals.starlightRoute?.id === "404";
       .search-container {
         width: 100%;
       }
+      .harp-acronym-banner {
+        font-size: 1.15rem !important;
+      }
+    }
+
+    .harp-acronym-banner {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 1.5rem;
+      padding: 0.6rem 1.5rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(0, 210, 190, 0.12), rgba(56, 189, 248, 0.10));
+      border: 1px solid rgba(0, 210, 190, 0.25);
+      color: color-mix(in srgb, var(--sl-color-white) 85%, transparent);
+    }
+
+    .harp-acronym-highlight {
+      color: #00d2be;
+      font-weight: 700;
     }
   }
 </style>
