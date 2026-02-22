@@ -1,6 +1,6 @@
 ---
 title: "Introducing HARP — The Human Authorization Protocol for AI Agents"
-date: 2025-02-22
+date: 2026-02-22T09:00:00
 authors:
   - name: HARP Team
     url: https://github.com/harp-protocol
