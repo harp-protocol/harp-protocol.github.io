@@ -1,0 +1,19 @@
+---
+/**
+ * Callout — highlight box with optional variant.
+ * Props: variant (info | warning | draft), title
+ */
+interface Props {
+  variant?: 'info' | 'warning' | 'draft';
+  title?: string;
+}
+
+const { variant = 'info', title } = Astro.props;
+---
+
+<aside class={`harp-callout harp-callout--${variant}`}>
+  {title && <strong class="harp-callout__title">{title}</strong>}
+  <div class="harp-callout__body">
+    <slot />
+  </div>
+</aside>

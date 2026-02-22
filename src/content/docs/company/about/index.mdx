@@ -1,0 +1,35 @@
+---
+title: "About — HARP"
+description: "HARP is an open protocol for human authorization of AI agent actions."
+---
+
+import HeroSmall from "~/components/harp/HeroSmall.astro";
+import Callout from "~/components/harp/Callout.astro";
+
+<HeroSmall
+  title="About <em>HARP</em>"
+  subtitle="An open protocol ensuring every AI agent action receives explicit human authorization."
+/>
+
+## What is HARP?
+
+**HARP (Human Authorization & Review Protocol)** is an open, cryptographically verifiable protocol that ensures every AI agent action receives explicit human approval before execution.
+
+As AI coding agents become increasingly autonomous — generating plans, modifying files, running commands, and deploying code — HARP provides the missing authorization layer: a secure, out-of-band mechanism for humans to review and cryptographically sign every action.
+
+## Design principles
+
+- **Open standard** — HARP is a protocol specification, not a product. Anyone can implement it.
+- **Zero-knowledge** — The relay infrastructure never sees plaintext code or diffs.
+- **Fail-closed** — If verification fails for any reason, execution is denied.
+- **Interoperable** — Works with any AI agent, IDE, or mobile platform.
+
+## Current status
+
+<Callout variant="draft" title="Draft specification v0.2">
+  HARP is under active development. The current specification (v0.2) is a standards-track draft. Normative language (MUST, SHOULD, MAY) indicates intended behavior for conforming implementations.
+</Callout>
+
+## Get involved
+
+HARP is developed in the open on [GitHub](https://github.com/harp-protocol/harp-spec). Contributions, feedback, and implementation reports are welcome.

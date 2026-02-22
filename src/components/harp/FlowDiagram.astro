@@ -1,0 +1,45 @@
+---
+/**
+ * FlowDiagram — inline SVG: Agent → Enforcer → Approver → Enforcer → Execution
+ */
+---
+
+<div class="harp-flow-diagram">
+  <svg viewBox="0 0 900 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="harp-flow-diagram__svg">
+    <!-- Agent -->
+    <rect x="10" y="30" width="140" height="60" rx="12" class="harp-flow-diagram__node" />
+    <text x="80" y="65" text-anchor="middle" class="harp-flow-diagram__label">Agent</text>
+
+    <!-- Arrow 1 -->
+    <line x1="150" y1="60" x2="195" y2="60" class="harp-flow-diagram__arrow" />
+    <polygon points="195,54 210,60 195,66" class="harp-flow-diagram__arrowhead" />
+
+    <!-- Enforcer 1 -->
+    <rect x="210" y="30" width="140" height="60" rx="12" class="harp-flow-diagram__node harp-flow-diagram__node--enforcer" />
+    <text x="280" y="65" text-anchor="middle" class="harp-flow-diagram__label">Enforcer</text>
+
+    <!-- Arrow 2 -->
+    <line x1="350" y1="60" x2="395" y2="60" class="harp-flow-diagram__arrow" />
+    <polygon points="395,54 410,60 395,66" class="harp-flow-diagram__arrowhead" />
+
+    <!-- Approver -->
+    <rect x="410" y="30" width="140" height="60" rx="12" class="harp-flow-diagram__node harp-flow-diagram__node--approver" />
+    <text x="480" y="65" text-anchor="middle" class="harp-flow-diagram__label">Approver</text>
+
+    <!-- Arrow 3 -->
+    <line x1="550" y1="60" x2="595" y2="60" class="harp-flow-diagram__arrow" />
+    <polygon points="595,54 610,60 595,66" class="harp-flow-diagram__arrowhead" />
+
+    <!-- Enforcer 2 -->
+    <rect x="610" y="30" width="140" height="60" rx="12" class="harp-flow-diagram__node harp-flow-diagram__node--enforcer" />
+    <text x="680" y="65" text-anchor="middle" class="harp-flow-diagram__label">Enforcer</text>
+
+    <!-- Arrow 4 -->
+    <line x1="750" y1="60" x2="795" y2="60" class="harp-flow-diagram__arrow" />
+    <polygon points="795,54 810,60 795,66" class="harp-flow-diagram__arrowhead" />
+
+    <!-- Execution -->
+    <rect x="810" y="30" width="80" height="60" rx="12" class="harp-flow-diagram__node harp-flow-diagram__node--exec" />
+    <text x="850" y="65" text-anchor="middle" class="harp-flow-diagram__label harp-flow-diagram__label--small">Execute</text>
+  </svg>
+</div>

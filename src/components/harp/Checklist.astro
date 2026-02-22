@@ -1,0 +1,20 @@
+---
+/**
+ * Checklist — styled checkbox list.
+ * Props: items array of strings
+ */
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="harp-checklist">
+  {items.map((item) => (
+    <li class="harp-checklist__item">
+      <span class="harp-checklist__box">☐</span>
+      <span set:html={item} />
+    </li>
+  ))}
+</ul>

@@ -1,0 +1,63 @@
+---
+title: "Protocol Overview — HARP"
+description: "Technical overview of the HARP protocol layers, message flows, and architecture."
+---
+
+import HeroSmall from "~/components/harp/HeroSmall.astro";
+import FeatureGrid from "~/components/harp/FeatureGrid.astro";
+import FeatureCard from "~/components/harp/FeatureCard.astro";
+import LinkCards from "~/components/harp/LinkCards.astro";
+import CTABanner from "~/components/harp/CTABanner.astro";
+
+<HeroSmall
+  title="Protocol <em>architecture</em>"
+  subtitle="HARP is organized into three specification layers, each building on the one below."
+/>
+
+## Specification layers
+
+<FeatureGrid columns={3}>
+  <FeatureCard title="CORE layer" icon="layers">
+    Artifact hashing, decision signing, signature verification. The foundation of cryptographic binding.
+  </FeatureCard>
+  <FeatureCard title="PROMPT layer" icon="document">
+    Prompt classification, hash computation, metadata tagging. Extends CORE for AI prompt artifacts.
+  </FeatureCard>
+  <FeatureCard title="SESSION layer" icon="refresh">
+    Session lifecycle, snapshot hashing, state management. Manages multi-turn agent sessions.
+  </FeatureCard>
+</FeatureGrid>
+
+## Message flow
+
+1. **Agent** produces an artifact (plan, patch, command, checkpoint)
+2. **Desktop Enforcer** canonicalizes, hashes (SHA-256), encrypts (X25519 + AEAD), and routes to gateway
+3. **Gateway** relays ciphertext only (zero-knowledge)
+4. **Mobile Approver** decrypts, displays, and signs a Decision (Ed25519)
+5. **Desktop Enforcer** verifies signature, hash match, expiry, nonce, and replay cache
+6. **Execution** proceeds only if all verification passes; otherwise fail closed
+
+## Key data structures
+
+### Artifact
+The canonical representation of an agent action. Fields include `requestId`, `artifactType`, `payload`, `artifactHash`, `artifactHashAlg`, `createdAt`, and `expiresAt`.
+
+### Decision
+A signed human response to an artifact. Fields include `requestId`, `artifactHash`, `decision` (allow/deny), `signature`, `nonce`, and `expiresAt`.
+
+## Specifications
+
+<LinkCards cards={[
+  { title: "HARP-CORE", description: "Artifact hashing and decision signing", href: "/resources/specs/core/" },
+  { title: "HARP-PROMPT", description: "Prompt classification and hashing", href: "/resources/specs/prompt/" },
+  { title: "HARP-SESSION", description: "Session lifecycle management", href: "/resources/specs/session/" },
+  { title: "HARP-TRANSPORT", description: "Wire protocol and gateway routing", href: "/resources/specs/transport/" },
+  { title: "HARP-KEYMGMT", description: "Key lifecycle and device binding", href: "/resources/specs/keymgmt/" },
+  { title: "HARP-THREATMODEL", description: "Threat analysis and mitigations", href: "/resources/specs/threatmodel/" }
+]} />
+
+<CTABanner
+  title="Start building"
+  primaryCta={{ label: "Developer quickstart", href: "/developers/quickstart/" }}
+  secondaryCta={{ label: "Full spec suite", href: "/resources/specs/" }}
+/>

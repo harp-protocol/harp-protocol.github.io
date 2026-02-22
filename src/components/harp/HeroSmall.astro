@@ -1,0 +1,31 @@
+---
+/**
+ * HeroSmall — compact hero for inner pages.
+ * Props: title, subtitle, primaryCta, secondaryCta
+ */
+interface Props {
+  title: string;
+  subtitle?: string;
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+}
+
+const { title, subtitle, primaryCta, secondaryCta } = Astro.props;
+---
+
+<section class="harp-hero-small">
+  <div class="harp-hero-small__inner">
+    <h1 class="harp-hero-small__title" set:html={title} />
+    {subtitle && <p class="harp-hero-small__subtitle">{subtitle}</p>}
+    {(primaryCta || secondaryCta) && (
+      <div class="harp-hero-small__actions">
+        {primaryCta && (
+          <a href={primaryCta.href} class="harp-btn harp-btn--primary">{primaryCta.label}</a>
+        )}
+        {secondaryCta && (
+          <a href={secondaryCta.href} class="harp-btn harp-btn--outline">{secondaryCta.label}</a>
+        )}
+      </div>
+    )}
+  </div>
+</section>

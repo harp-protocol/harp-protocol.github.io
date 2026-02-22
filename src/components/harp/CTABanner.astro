@@ -1,0 +1,29 @@
+---
+/**
+ * CTABanner — full-width bottom CTA banner.
+ * Props: title, subtitle, primaryCta, secondaryCta
+ */
+interface Props {
+  title: string;
+  subtitle?: string;
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+}
+
+const { title, subtitle, primaryCta, secondaryCta } = Astro.props;
+---
+
+<section class="harp-cta-banner">
+  <div class="harp-cta-banner__inner">
+    <h2 class="harp-cta-banner__title">{title}</h2>
+    {subtitle && <p class="harp-cta-banner__subtitle">{subtitle}</p>}
+    <div class="harp-cta-banner__actions">
+      {primaryCta && (
+        <a href={primaryCta.href} class="harp-btn harp-btn--primary">{primaryCta.label}</a>
+      )}
+      {secondaryCta && (
+        <a href={secondaryCta.href} class="harp-btn harp-btn--outline">{secondaryCta.label}</a>
+      )}
+    </div>
+  </div>
+</section>

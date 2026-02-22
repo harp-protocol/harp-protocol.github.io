@@ -1,0 +1,23 @@
+---
+/**
+ * Steps — numbered step flow.
+ * Props: steps array of { title, description }
+ */
+interface Props {
+  steps: { title: string; description: string }[];
+}
+
+const { steps } = Astro.props;
+---
+
+<div class="harp-steps">
+  {steps.map((step, i) => (
+    <div class="harp-steps__item">
+      <div class="harp-steps__number">{i + 1}</div>
+      <div class="harp-steps__content">
+        <h3 class="harp-steps__title">{step.title}</h3>
+        <p class="harp-steps__desc">{step.description}</p>
+      </div>
+    </div>
+  ))}
+</div>

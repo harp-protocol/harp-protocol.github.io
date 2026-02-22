@@ -1,0 +1,22 @@
+---
+/**
+ * LinkCards — clickable resource cards.
+ * Props: cards array of { title, description, href }
+ */
+interface Props {
+  cards: { title: string; description: string; href: string }[];
+}
+
+const { cards } = Astro.props;
+---
+
+<div class="harp-link-cards">
+  {cards.map((card) => (
+    <a href={card.href} class="harp-link-card">
+      <h3 class="harp-link-card__title">{card.title}
+        <span class="harp-link-card__arrow">→</span>
+      </h3>
+      <p class="harp-link-card__desc">{card.description}</p>
+    </a>
+  ))}
+</div>

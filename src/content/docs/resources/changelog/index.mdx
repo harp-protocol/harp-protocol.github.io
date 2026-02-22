@@ -1,0 +1,58 @@
+---
+title: "Changelog — HARP"
+description: "Version history and changes to the HARP specification."
+---
+
+import HeroSmall from "~/components/harp/HeroSmall.astro";
+import Callout from "~/components/harp/Callout.astro";
+
+<HeroSmall
+  title="Changelog"
+  subtitle="Version history of the HARP specification suite."
+/>
+
+## v0.2 — Current draft
+
+<Callout variant="draft" title="Standards-track draft">
+  This is the current working draft. Normative language indicates intended behavior.
+</Callout>
+
+### HARP-CORE v0.2
+- Artifact canonical JSON format defined
+- SHA-256 hashing over signable form
+- Ed25519 decision signatures
+- Replay protection via nonce + expiry + cache
+- Fail-closed enforcement model
+
+### HARP-PROMPT v0.2
+- Prompt classification taxonomy
+- Prompt hash computation
+- Metadata tagging for prompt artifacts
+
+### HARP-SESSION v0.2
+- Session lifecycle (create, snapshot, close)
+- Snapshot hashing
+- Session state management
+
+### HARP-TRANSPORT v0.2
+- Gateway message routing
+- E2E encryption (X25519 + AEAD)
+- Zero-knowledge relay design
+
+### HARP-KEYMGMT v0.2
+- Key generation and device binding
+- Key rotation recommendations
+- Hardware-backed storage guidance
+
+### HARP-THREATMODEL v0.2
+- Threat analysis for all protocol components
+- Mitigation requirements
+- Out-of-scope threats documented
+
+### HARP-GOVERNANCE v0.2
+- Specification governance process
+- Versioning and extension rules
+
+### HARP-COMPLIANCE v0.2
+- Conformance levels defined
+- Test vector requirements

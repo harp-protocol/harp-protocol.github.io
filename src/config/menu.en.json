@@ -1,0 +1,134 @@
+{
+  "main": [
+    {
+      "name": "Spec",
+      "url": "",
+      "hasChildren": true,
+      "children": [
+        {
+          "name": "Spec Overview",
+          "url": "/product/"
+        },
+        {
+          "name": "How it works",
+          "url": "/how-it-works/"
+        },
+        {
+          "name": "Security",
+          "url": "/security/"
+        },
+        {
+          "name": "Integrations",
+          "url": "/integrations/"
+        }
+      ]
+    },
+    {
+      "name": "Developers",
+      "url": "",
+      "hasChildren": true,
+      "children": [
+        {
+          "name": "Quickstart",
+          "url": "/developers/quickstart/"
+        },
+        {
+          "name": "Protocol",
+          "url": "/developers/protocol/"
+        }
+      ]
+    },
+    {
+      "name": "Resources",
+      "url": "",
+      "hasChildren": true,
+      "children": [
+        {
+          "name": "Specs",
+          "url": "/resources/specs/"
+        },
+        {
+          "name": "Schemas",
+          "url": "/resources/schemas/"
+        },
+        {
+          "name": "Test vectors",
+          "url": "/resources/test-vectors/"
+        },
+        {
+          "name": "Changelog",
+          "url": "/resources/changelog/"
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "url": "/company/contact/"
+    }
+  ],
+  "footer": {
+    "community": {
+      "title": "Spec",
+      "links": [
+        {
+          "name": "Spec Overview",
+          "url": "/product/"
+        },
+        {
+          "name": "How it works",
+          "url": "/how-it-works/"
+        },
+        {
+          "name": "Security",
+          "url": "/security/"
+        },
+        {
+          "name": "Integrations",
+          "url": "/integrations/"
+        }
+      ]
+    },
+    "help_links": {
+      "title": "Developers",
+      "links": [
+        {
+          "name": "Quickstart",
+          "url": "/developers/quickstart/"
+        },
+        {
+          "name": "Protocol",
+          "url": "/developers/protocol/"
+        },
+        {
+          "name": "Specs",
+          "url": "/resources/specs/"
+        },
+        {
+          "name": "Schemas",
+          "url": "/resources/schemas/"
+        }
+      ]
+    },
+    "company": {
+      "title": "Contact & Links",
+      "links": [
+        {
+          "name": "About",
+          "url": "/company/about/"
+        },
+        {
+          "name": "Contact",
+          "url": "/company/contact/"
+        },
+        {
+          "name": "Changelog",
+          "url": "/resources/changelog/"
+        },
+        {
+          "name": "GitHub",
+          "url": "https://github.com/harp-protocol/harp-spec"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+---
+/**
+ * FeatureGrid — responsive card grid with icon, title, description.
+ * Props: columns (2 | 3 | 4)
+ */
+interface Props {
+  columns?: 2 | 3 | 4;
+}
+
+const { columns = 3 } = Astro.props;
+---
+
+<div class={`harp-feature-grid harp-feature-grid--cols-${columns}`}>
+  <slot />
+</div>

@@ -1,0 +1,115 @@
+---
+title: "HARP — Human Authorization & Review Protocol"
+description: "The human control layer for autonomous AI systems. Approve AI agent actions from your phone with cryptographic proof."
+template: splash
+hero:
+  title: |
+    The human control layer <span class="light-text">for AI agents</span>
+  tagline: "AI agents generate plans, modify files, run commands, and deploy code. HARP lets humans authorize every action from a mobile device — cryptographically bound, out-of-band, and enterprise-ready."
+  actions:
+    - text: Get started
+      link: /developers/quickstart/
+      icon: right-arrow
+      variant: primary
+    - text: View specs (v0.2)
+      link: /resources/specs/
+      icon: external
+      variant: minimal
+---
+
+import Section from "~/components/Section.astro";
+import FeatureGrid from "~/components/harp/FeatureGrid.astro";
+import FeatureCard from "~/components/harp/FeatureCard.astro";
+import Steps from "~/components/harp/Steps.astro";
+import Callout from "~/components/harp/Callout.astro";
+import CTABanner from "~/components/harp/CTABanner.astro";
+
+<Section title="The problem" description="AI coding agents are becoming autonomous — but approvals are still just UI buttons.">
+
+<FeatureGrid columns={3}>
+  <FeatureCard title="Approvals live inside IDEs, terminals and servers" icon="warning">
+    Today's control model: click "approve" in the same UI the agent controls. No cryptographic binding. No out-of-band verification.
+  </FeatureCard>
+  <FeatureCard title="No proof of human intent" icon="lock">
+    There's no way to prove that a human actually reviewed and approved what executed. Audits rely on timestamps, not signatures.
+  </FeatureCard>
+  <FeatureCard title="Enterprise risk grows" icon="building">
+    As agents run migrations, deploy infrastructure, and modify production code — enterprises need governance, not just guardrails.
+  </FeatureCard>
+</FeatureGrid>
+
+</Section>
+
+<Section title="How HARP works" description="Your AI agent asks. You approve from your phone. Execution only happens with your cryptographic signature.">
+
+<Steps steps={[
+  { title: "Agent creates an artifact", description: "The AI agent produces a plan, patch, command, or checkpoint describing what it wants to do." },
+  { title: "Desktop encrypts & hashes", description: "The desktop enforcer canonicalizes the artifact, computes its hash, and encrypts it end-to-end to your mobile device." },
+  { title: "You review on your phone", description: "Your mobile approver decrypts and displays the exact content for review — out-of-band from the IDE." },
+  { title: "You sign your decision", description: "Approve or deny. Your device signs the decision (Ed25519), bound to the artifact hash, scoped and time-limited." },
+  { title: "Desktop enforces", description: "The desktop verifies signature, hash match, expiry, and replay protection. Only then: execute. Otherwise: fail closed." }
+]} />
+
+</Section>
+
+<Section title="Why out-of-band matters" description="Authorization should happen on a device the agent cannot control.">
+
+<FeatureGrid columns={3}>
+  <FeatureCard title="Separate trust boundary" icon="phone">
+    Your phone holds the signing keys. The AI agent never touches them. Even a compromised IDE can't forge your approval.
+  </FeatureCard>
+  <FeatureCard title="Cryptographic binding" icon="key">
+    The approval is mathematically bound to the exact bytes the agent proposed. Substitution after approval is detectable.
+  </FeatureCard>
+  <FeatureCard title="Zero-knowledge relay" icon="cloud">
+    The gateway routes only ciphertext and metadata. It cannot read your code, inspect diffs, or forge approvals.
+  </FeatureCard>
+</FeatureGrid>
+
+</Section>
+
+<Section title="What agents do that needs authorization" description="Every autonomous action becomes a reviewable, signable artifact.">
+
+<FeatureGrid columns={2}>
+  <FeatureCard title="Plans & task bundles" icon="clipboard">
+    Agent proposes a multi-step implementation plan. You review and approve the plan before any code is written.
+  </FeatureCard>
+  <FeatureCard title="Patches & diffs" icon="pencil">
+    Agent generates code changes. You see the exact diff, approve, and only then is the patch applied.
+  </FeatureCard>
+  <FeatureCard title="Terminal commands" icon="bolt">
+    Agent wants to run a shell command. You see the exact command, approve from your phone, and it executes.
+  </FeatureCard>
+  <FeatureCard title="Checkpoints" icon="rocket">
+    Commits, pushes, deployments, migrations — each becomes a signed checkpoint with your cryptographic approval.
+  </FeatureCard>
+</FeatureGrid>
+
+</Section>
+
+<Section title="Enterprise-ready from day one" description="Built for organizations where governance is not optional.">
+
+<FeatureGrid columns={3}>
+  <FeatureCard title="Audit trail" icon="clipboard">
+    Every decision is verifiable offline: what was proposed, who approved, when, and what executed.
+  </FeatureCard>
+  <FeatureCard title="Policy enforcement" icon="governance">
+    Define rules: require approval for high-risk operations, escalate for production deployments, enforce team-level governance.
+  </FeatureCard>
+  <FeatureCard title="Compliance-grade" icon="check">
+    Cryptographic signatures, replay protection, scoped time-limited decisions, and tamper-evident logging.
+  </FeatureCard>
+</FeatureGrid>
+
+</Section>
+
+<Callout variant="draft" title="Draft status: v0.2">
+  HARP v0.2 is a standards-track draft. Language like "MUST/SHOULD" indicates intended normative behavior. Do not treat as a finalized standard.
+</Callout>
+
+<CTABanner
+  title="Ready to integrate?"
+  subtitle="Start with a minimal interoperable implementation or dive into the specs."
+  primaryCta={{ label: "Get started", href: "/developers/quickstart/" }}
+  secondaryCta={{ label: "View specs (v0.2)", href: "/resources/specs/" }}
+/>

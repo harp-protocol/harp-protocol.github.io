@@ -1,0 +1,195 @@
+---
+title: "Test Vectors — HARP"
+description: "Byte-level conformance test vectors for HARP implementations."
+---
+
+import HeroSmall from "~/components/harp/HeroSmall.astro";
+import Callout from "~/components/harp/Callout.astro";
+
+<HeroSmall
+  title="Test <em>Vectors</em>"
+  subtitle="Byte-level conformance tests for validating HARP implementations."
+/>
+
+<Callout variant="warning" title="Run before shipping">
+  Canonicalization bugs are the most common source of interop failures. Every implementation MUST pass these test vectors.
+</Callout>
+
+## CORE test vectors
+
+This document provides deterministic canonicalization, hashing, and signing test vectors for HARP-CORE implementations.
+
+## Canonicalization
+
+Canonical JSON bytes are produced by:
+- UTF-8 encoding
+- Object keys sorted lexicographically
+- No insignificant whitespace (separators `,` and `:`)
+- No trailing newline
+
+Implementations MUST reproduce the exact byte sequences shown below.
+
+## Test Vector 1: Artifact Hash
+
+### Artifact (signable form: WITHOUT `artifactHash`)
+
+```json
+{
+  "requestId": "01J2V8V3K6B2Z9X6G1V7Y2QK8H",
+  "sessionId": "01J2V8V3M2YF0KX9Q0Z7E6H9R1",
+  "artifactType": "plan.review",
+  "repoRef": "repo:acme/widgets",
+  "baseRevision": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+  "createdAt": "2026-02-21T12:00:00Z",
+  "expiresAt": "2026-02-21T12:10:00Z",
+  "payload": {
+    "kind": "plan",
+    "title": "Refactor Parser",
+    "steps": [
+      "Extract tokenizer",
+      "Add unit tests",
+      "Replace recursive descent with Pratt parser"
+    ],
+    "risk": "medium"
+  },
+  "artifactHashAlg": "SHA-256"
+}
+```
+
+### Canonical bytes (UTF-8)
+
+```text
+{"artifactHashAlg":"SHA-256","artifactType":"plan.review","baseRevision":"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08","createdAt":"2026-02-21T12:00:00Z","expiresAt":"2026-02-21T12:10:00Z","payload":{"kind":"plan","risk":"medium","steps":["Extract tokenizer","Add unit tests","Replace recursive descent with Pratt parser"],"title":"Refactor Parser"},"repoRef":"repo:acme/widgets","requestId":"01J2V8V3K6B2Z9X6G1V7Y2QK8H","sessionId":"01J2V8V3M2YF0KX9Q0Z7E6H9R1"}
+```
+
+### SHA-256 (hex)
+
+```text
+8e326e1f69e5859a3b5b12965f06b5829f09b12d1748aa2fddb609fb44f831c1
+```
+
+## Test Vector 2: Decision Signature (Ed25519)
+
+### Signer public key (raw, base64url)
+
+```text
+68GYuLi_rncjJ4w7MWKfKd5ygpeXzMjCzM5tlDakz_I
+```
+
+### DecisionSignable canonical JSON
+
+```text
+{"artifactHash":"8e326e1f69e5859a3b5b12965f06b5829f09b12d1748aa2fddb609fb44f831c1","artifactHashAlg":"SHA-256","decision":"allow","expiresAt":"2026-02-21T12:05:00Z","nonce":"bm9uY2UtMDAx","repoRef":"repo:acme/widgets","requestId":"01J2V8V3K6B2Z9X6G1V7Y2QK8H","scope":"once","sigAlg":"Ed25519","signerKeyId":"ma-key-01"}
+```
+
+### Signature (raw, base64url)
+
+```text
+tszU90YldEomMTTrJpUYz-h8xXcAvJ6U97aaEy-1-Oo_vkCx3o63aZps6dN0VaJVKmXY2UnVW6ldoCuXv5sZDA
+```
+
+## Notes
+
+- Signature input is the canonical JSON bytes of DecisionSignable (Decision without `signature`).
+- Signature is the raw 64-byte Ed25519 signature encoded base64url (no padding).
+
+
+## PROMPT test vectors
+
+This document provides deterministic canonicalization and hashing test vectors for the HARP-PROMPT extension.
+
+## Canonicalization Profile
+
+Canonical JSON bytes are produced by:
+- UTF-8 encoding
+- Object keys sorted lexicographically
+- No insignificant whitespace (separators `,` and `:`)
+- No trailing newline
+
+Implementations MUST reproduce the exact byte sequence below.
+
+## Test Vector 1: promptHash
+
+### PromptSignable (WITHOUT `promptHash`)
+
+```json
+{
+  "requestId": "01J2V9K3M2W1J5R6S7T8U9V0W1",
+  "sessionId": "01J2V8V3M2YF0KX9Q0Z7E6H9R1",
+  "repoRef": "repo:acme/widgets",
+  "artifactType": "prompt.send",
+  "createdAt": "2026-02-21T12:01:00Z",
+  "target": "agentChat",
+  "text": "Please summarize the plan and list risks. Keep it concise.",
+  "promptHashAlg": "SHA-256"
+}
+```
+
+### Canonical bytes (UTF-8)
+
+```text
+{"artifactType":"prompt.send","createdAt":"2026-02-21T12:01:00Z","promptHashAlg":"SHA-256","repoRef":"repo:acme/widgets","requestId":"01J2V9K3M2W1J5R6S7T8U9V0W1","sessionId":"01J2V8V3M2YF0KX9Q0Z7E6H9R1","target":"agentChat","text":"Please summarize the plan and list risks. Keep it concise."}
+```
+
+### SHA-256 (hex)
+
+```text
+0b18f65f2e4d81b0bbfa89267138163a439ee2381393f95b41f01fbdfdbabd50
+```
+
+## Notes
+
+- `promptHash` is computed over the canonical JSON of the prompt object excluding `promptHash`.
+- If optional fields (e.g., `metadata`, `extensions`) are present, they MUST be included in the hash input.
+
+
+## SESSION test vectors
+
+## Canonicalization Profile
+
+Canonical JSON bytes are produced by:
+- UTF-8 encoding
+- Object keys sorted lexicographically
+- No insignificant whitespace
+- No trailing newline
+
+## Test Vector 1: snapshotHash
+
+### SnapshotSignable (WITHOUT `snapshotHash`)
+
+```json
+{
+  "sessionId": "01J2V8V3M2YF0KX9Q0Z7E6H9R1",
+  "eventType": "session.snapshot",
+  "snapshotId": "snap-001",
+  "snapshotType": "summary",
+  "createdAt": "2026-02-21T12:02:00Z",
+  "payload": {
+    "summary": "Parser refactor planned. Medium risk due to grammar changes.",
+    "filesAffected": [
+      "parser.py",
+      "lexer.py"
+    ]
+  },
+  "snapshotHashAlg": "SHA-256"
+}
+```
+
+### Canonical bytes (UTF-8)
+
+```text
+{"createdAt":"2026-02-21T12:02:00Z","eventType":"session.snapshot","payload":{"filesAffected":["parser.py","lexer.py"],"summary":"Parser refactor planned. Medium risk due to grammar changes."},"sessionId":"01J2V8V3M2YF0KX9Q0Z7E6H9R1","snapshotHashAlg":"SHA-256","snapshotId":"snap-001","snapshotType":"summary"}
+```
+
+### SHA-256 (hex)
+
+```text
+5145a558f7390a66768c6da0195f12484bb1f01c44b8bc33518733970ac06e5d
+```
+
+## Notes
+
+- snapshotHash is computed over canonical JSON of snapshot object excluding `snapshotHash`.
+- If metadata is present, it MUST be included in hash input.
+
+

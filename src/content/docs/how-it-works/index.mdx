@@ -1,0 +1,70 @@
+---
+title: "How It Works — HARP"
+description: "AI agents ask. Humans approve from their phone. Execution happens only with a cryptographic signature."
+---
+
+import HeroSmall from "~/components/harp/HeroSmall.astro";
+import Steps from "~/components/harp/Steps.astro";
+import FlowDiagram from "~/components/harp/FlowDiagram.astro";
+import Callout from "~/components/harp/Callout.astro";
+import FeatureGrid from "~/components/harp/FeatureGrid.astro";
+import FeatureCard from "~/components/harp/FeatureCard.astro";
+import LinkCards from "~/components/harp/LinkCards.astro";
+import CTABanner from "~/components/harp/CTABanner.astro";
+
+<HeroSmall
+  title="Agent asks. Human approves. <em>From their phone.</em>"
+  subtitle="Every autonomous action becomes a signed artifact. Every approval is cryptographically bound to what executes."
+/>
+
+## The flow
+
+<Steps steps={[
+  { title: "Agent creates an artifact", description: "The AI agent produces a plan, patch, command, or checkpoint describing the intended action." },
+  { title: "Desktop encrypts & hashes", description: "The enforcer canonicalizes the artifact to deterministic bytes, computes SHA-256 hash, and encrypts end-to-end to the mobile device." },
+  { title: "Human reviews on mobile", description: "The mobile approver decrypts and displays the artifact content for review — fully out-of-band from the IDE." },
+  { title: "Human signs a decision", description: "Approve or deny. The device signs a Decision (Ed25519) bound to the artifact hash, with scope and expiry." },
+  { title: "Desktop enforces", description: "The enforcer verifies signature, hash match, expiration, scope, and replay protection. Only then: execute. Otherwise: fail closed." }
+]} />
+
+## Authorization flow
+
+<FlowDiagram />
+
+## Three components
+
+<FeatureGrid columns={3}>
+  <FeatureCard title="Desktop Agent" icon="desktop">
+    IDE extension (e.g., VS Code). The local enforcement boundary. Encrypts artifacts, verifies signatures, gates execution.
+  </FeatureCard>
+  <FeatureCard title="Mobile Approver" icon="phone">
+    Your phone. Holds the private signing key. Decrypts and displays artifacts. Signs approval decisions.
+  </FeatureCard>
+  <FeatureCard title="Gateway" icon="cloud">
+    Cloud relay (optional). Routes encrypted payloads only. Cannot decrypt artifacts. Cannot forge approvals. Zero-knowledge by design.
+  </FeatureCard>
+</FeatureGrid>
+
+## Trust boundaries
+
+- **Desktop Enforcer** — must be the gating boundary; no execution without valid signed decision
+- **Mobile Approver** — holds signing keys on a separate device the agent cannot control
+- **Gateway** — untrusted for plaintext; routes ciphertext and metadata only
+
+<Callout variant="warning" title='What "fail closed" means'>
+  If any verification step fails — signature, hash mismatch, expiry, replay — execution is rejected. No exceptions.
+</Callout>
+
+## Dive deeper
+
+<LinkCards cards={[
+  { title: "Specifications", description: "Full HARP spec suite (v0.2)", href: "/resources/specs/" },
+  { title: "Schemas", description: "Normative JSON schemas", href: "/resources/schemas/" },
+  { title: "Test vectors", description: "Byte-level conformance tests", href: "/resources/test-vectors/" }
+]} />
+
+<CTABanner
+  title="Ready to implement?"
+  primaryCta={{ label: "Get started", href: "/developers/quickstart/" }}
+  secondaryCta={{ label: "View specs", href: "/resources/specs/" }}
+/>

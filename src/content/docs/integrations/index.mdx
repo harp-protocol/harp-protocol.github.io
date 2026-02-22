@@ -1,0 +1,74 @@
+---
+title: "Integrations — HARP"
+description: "HARP sits between AI agents and execution. Integrate at the desktop, the mobile, or the gateway."
+---
+
+import HeroSmall from "~/components/harp/HeroSmall.astro";
+import FeatureGrid from "~/components/harp/FeatureGrid.astro";
+import FeatureCard from "~/components/harp/FeatureCard.astro";
+import Callout from "~/components/harp/Callout.astro";
+import CTABanner from "~/components/harp/CTABanner.astro";
+
+<HeroSmall
+  title="Where HARP <em>plugs in</em>"
+  subtitle="A protocol layer between AI agents and execution — integrate at the desktop agent, the mobile approver, or the gateway."
+/>
+
+## AI agent integration points
+
+<FeatureGrid columns={2}>
+  <FeatureCard title="IDE extensions" icon="desktop">
+    VS Code, JetBrains, or any editor with agent support. The desktop enforcer wraps every agent action as a HARP artifact.
+  </FeatureCard>
+  <FeatureCard title="Agent frameworks" icon="robot">
+    Agents that emit plans, patches, commands, or checkpoints. HARP becomes the last-mile authorization gate.
+  </FeatureCard>
+  <FeatureCard title="Mobile approver apps" icon="phone">
+    Custom or white-label mobile apps that decrypt, display, and sign HARP decisions. Your phone becomes the signing authority.
+  </FeatureCard>
+  <FeatureCard title="Gateway infrastructure" icon="cloud">
+    Zero-knowledge relay services that route encrypted artifacts and decisions without seeing plaintext.
+  </FeatureCard>
+</FeatureGrid>
+
+## Enterprise integration scenarios
+
+<FeatureGrid columns={2}>
+  <FeatureCard title="Team-level governance" icon="building">
+    Require senior approval for production deployments. Enforce multi-person review for high-risk operations.
+  </FeatureCard>
+  <FeatureCard title="Autonomous operations" icon="gear">
+    AI agents running infrastructure changes, data migrations, or cloud operations — each action requires human sign-off.
+  </FeatureCard>
+  <FeatureCard title="Compliance & audit" icon="clipboard">
+    Every approval is cryptographically verifiable. Audit trails are tamper-evident. Meet regulatory requirements.
+  </FeatureCard>
+  <FeatureCard title="DevOps pipelines" icon="refresh">
+    Gate deployment steps with HARP approvals. Approve from your phone while the pipeline waits.
+  </FeatureCard>
+</FeatureGrid>
+
+## Deployment patterns
+
+<FeatureGrid columns={3}>
+  <FeatureCard title="Desktop enforcer" icon="desktop">
+    On the developer machine, integrated into the IDE. The primary trust boundary.
+  </FeatureCard>
+  <FeatureCard title="Sidecar / gateway" icon="box">
+    In a server context for autonomous agents. Enforces decisions before actions reach production.
+  </FeatureCard>
+  <FeatureCard title="Managed relay" icon="cloud">
+    Cloud-hosted gateway with device management, push notifications, and tenant isolation.
+  </FeatureCard>
+</FeatureGrid>
+
+<Callout variant="info" title="Key principle">
+  Authorization happens on a device the agent cannot control. Enforcement happens at the point of execution.
+</Callout>
+
+<CTABanner
+  title="Ready to integrate?"
+  subtitle="Start with the developer quickstart."
+  primaryCta={{ label: "Get started", href: "/developers/quickstart/" }}
+  secondaryCta={{ label: "View specs", href: "/resources/specs/" }}
+/>

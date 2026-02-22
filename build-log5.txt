@@ -1,0 +1,146 @@
+﻿yarn run v1.22.22
+$ astro build
+node.exe : 2026-02-22T18:25:43.669Z astro:telemetry [notify] last n
+otified on 1771778471805
+At C:\Users\aliozgur\AppData\Roaming\npm\yarn.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modules/yarn/bin/yarn.js" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (2026-02-22T18:2...n 1 
+   771778471805:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+2026-02-22T18:25:44.746Z astro:Failed to load config with Node Type
+Error [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".ts" fo
+r D:\repos\personalgit\harp-site\node_modules\astro-vtbot\integrati
+on\starlight-view-transitions.ts
+    at Object.getFileProtocolModuleFormat [as file:] (node:internal
+/modules/esm/get_format:219:9)
+    at defaultGetFormat (node:internal/modules/esm/get_format:245:3
+6)
+    at defaultLoad (node:internal/modules/esm/load:120:22)
+    at async ModuleLoader.loadAndTranslate (node:internal/modules/e
+sm/loader:514:32)
+2026-02-22T18:25:46.222Z astro:telemetry {
+  context: {
+    isGit: false,
+    anonymousProjectId: '5e49c1d86b57eb66b7062e9585325a512a06d5cc23
+ac517a6033d99f0d6da9ed',
+    packageManager: 'yarn',
+    packageManagerVersion: '1.22.22',
+    anonymousId: 'f25404b09d362c666495fcb2f266382fe0e902210dac6ed20
+40e913ed4475dae',
+    anonymousSessionId: 'a312504bccfad9298aee8f7bc697e8788121737452
+08d325969e72c2feb4aebd'
+  },
+  meta: {
+    nodeVersion: '22.14.0',
+    viteVersion: '6.4.1',
+    astroVersion: '5.16.4',
+    systemPlatform: 'win32',
+    systemRelease: '10.0.26200',
+    systemArchitecture: 'x64',
+    cpuCount: 12,
+    cpuModel: 'Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz',
+    cpuSpeed: 2592,
+    memoryInMb: 16224,
+    isDocker: false,
+    isTTY: undefined,
+    isWSL: false,
+    isCI: false,
+    ciName: null
+  }
+}
+2026-02-22T18:25:46.222Z astro:telemetry [
+  {
+    "eventName": "ASTRO_CLI_SESSION_STARTED",
+    "payload": {
+      "cliCommand": "build",
+      "config": {
+        "site": true,
+        "integrations": [
+          "@astrojs/starlight"
+        ],
+        "build": {},
+        "server": true,
+        "image": {
+          "service": true
+        },
+        "markdown": {},
+        "vite": {
+          "plugins": true,
+          "resolve": true
+        },
+        "experimental": {},
+        "legacy": {}
+      }
+    }
+  }
+]
+2026-02-22T18:25:46.237Z astro:build Initial setup...
+2026-02-22T18:25:46.292Z astro:middleware The integration @astrojs/
+starlight has added middleware that runs before any application mid
+dleware you define.
+[2m21:25:47[22m [34m[content][39m Syncing content
+2026-02-22T18:25:47.519Z astro:telemetry {
+  context: {
+    isGit: false,
+    anonymousProjectId: '5e49c1d86b57eb66b7062e9585325a512a06d5cc23
+ac517a6033d99f0d6da9ed',
+    packageManager: 'yarn',
+    packageManagerVersion: '1.22.22',
+    anonymousId: 'f25404b09d362c666495fcb2f266382fe0e902210dac6ed20
+40e913ed4475dae',
+    anonymousSessionId: 'a312504bccfad9298aee8f7bc697e8788121737452
+08d325969e72c2feb4aebd'
+  },
+  meta: {
+    nodeVersion: '22.14.0',
+    viteVersion: '6.4.1',
+    astroVersion: '5.16.4',
+    systemPlatform: 'win32',
+    systemRelease: '10.0.26200',
+    systemArchitecture: 'x64',
+    cpuCount: 12,
+    cpuModel: 'Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz',
+    cpuSpeed: 2592,
+    memoryInMb: 16224,
+    isDocker: false,
+    isTTY: undefined,
+    isWSL: false,
+    isCI: false,
+    ciName: null
+  }
+}
+2026-02-22T18:25:47.519Z astro:telemetry [
+  {
+    "eventName": "ASTRO_CLI_ERROR",
+    "payload": {
+      "name": "InvalidContentEntryDataError",
+      "cliCommand": "build",
+      "isFatal": true,
+      "anonymousMessageHint": "  **ZOD_ERROR.PATH.JOIN(\".\")**: ZO
+D_ERROR.MESSAGE`),\n      \"\"\n    ].join(\"\\n\");\n  "
+    }
+  }
+]
+[31m[InvalidContentEntryDataError][39m [1mdocs ÔåÆ 404[22m data
+ does not match collection schema.
+
+  [1mtitle**: **title[22m: Required
+
+  [1mHint:[22m
+[33m    See [4mhttps://docs.astro.build/en/guides/content-collect
+ions/[24m for more information on content schemas.[39m
+  [1mError reference:[22m
+    [36m[4mhttps://docs.astro.build/en/reference/errors/invalid-c
+ontent-entry-data-error/[24m[39m
+  [1mLocation:[22m
+    [4mD:\repos\personalgit\harp-site\src\content\docs\404.md:0:0
+[24m
+  [1mStack trace:[22m
+[2m    at getEntryDataAndImages (file:///D:/repos/personalgit/harp
+-site/node_modules/astro/dist/content/utils.js:161:26)
+    at async syncData (D:/repos/personalgit/harp-site/node_modules/
+astro/dist/content/loaders/glob.js:97:28)[22m
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

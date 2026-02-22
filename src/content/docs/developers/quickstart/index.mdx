@@ -1,0 +1,94 @@
+---
+title: "Developer Quickstart — HARP"
+description: "Build a minimal HARP integration: create artifacts, hash them, submit for approval, verify decisions."
+---
+
+import HeroSmall from "~/components/harp/HeroSmall.astro";
+import Steps from "~/components/harp/Steps.astro";
+import Checklist from "~/components/harp/Checklist.astro";
+import Callout from "~/components/harp/Callout.astro";
+import LinkCards from "~/components/harp/LinkCards.astro";
+import CTABanner from "~/components/harp/CTABanner.astro";
+
+<HeroSmall
+  title="Build your first <em>HARP integration</em>"
+  subtitle="Create artifacts, hash them, send them to a mobile approver, and enforce signed decisions."
+/>
+
+## The core loop
+
+<Steps steps={[
+  { title: "Wrap the agent action as an artifact", description: "Set artifactType (plan.review, patch.review, command.review, checkpoint.review). Include the payload, requestId, timestamps, and expiresAt." },
+  { title: "Canonicalize and hash", description: "Serialize to canonical JSON (sorted keys, no whitespace). Compute SHA-256 over the signable form (artifact minus artifactHash)." },
+  { title: "Encrypt and send to mobile", description: "E2E encrypt the artifact to the mobile approver's public key. Route via the gateway (or direct if local)." },
+  { title: "Receive the signed Decision", description: "The mobile approver reviews and signs a Decision (allow/deny) bound to the artifactHash." },
+  { title: "Verify and enforce", description: "Verify Ed25519 signature, check artifactHash match, validate expiry, check replay cache. Execute only if all pass." }
+]} />
+
+## Implementation checklist
+
+<Checklist items={[
+  "Canonical JSON: UTF-8, sorted keys, no whitespace, no trailing newline",
+  "artifactHash: SHA-256 over signable form (64 lowercase hex chars)",
+  "Decision signature: Ed25519, base64url without padding",
+  "Replay cache: store (requestId, artifactHash) tuples — retain at least until expiry + skew",
+  "Fail closed: any verification failure → deny execution",
+  "expiresAt on every artifact and Decision"
+]} />
+
+## Pseudocode
+
+```python
+# 1. Build artifact (plan, patch, command, checkpoint)
+artifact = {
+    "requestId": generate_ulid(),
+    "artifactType": "command.review",
+    "repoRef": "repo:acme/widgets",
+    "createdAt": now_utc(),
+    "expiresAt": now_utc() + timedelta(minutes=10),
+    "payload": {"kind": "command", "command": "npm run build"},
+    "artifactHashAlg": "SHA-256"
+}
+
+# 2. Canonical hash
+signable = canonical_json(artifact)            # sorted keys, no whitespace
+artifact["artifactHash"] = sha256_hex(signable)
+
+# 3. Encrypt & send to mobile approver
+ciphertext = e2e_encrypt(signable, mobile_public_key)
+send_to_gateway(ciphertext, metadata)
+
+# 4. Receive signed Decision from mobile
+decision = await_decision(artifact["requestId"])
+
+# 5. Verify & enforce
+assert verify_ed25519(decision, mobile_public_key)
+assert decision["artifactHash"] == artifact["artifactHash"]
+assert decision["expiresAt"] > now_utc()
+assert not replay_cache.contains(decision["nonce"])
+replay_cache.add(decision["nonce"], decision["expiresAt"])
+
+if decision["decision"] == "allow":
+    execute(artifact)
+else:
+    deny()
+```
+
+<Callout variant="warning" title="Test vector compliance">
+  Run the official test vectors before shipping. Canonicalization bugs are the most common source of interop failures.
+</Callout>
+
+## Resources
+
+<LinkCards cards={[
+  { title: "HARP-CORE spec", description: "Full specification", href: "/resources/specs/core/" },
+  { title: "Test vectors", description: "Canonical JSON and signing vectors", href: "/resources/specs/core-test-vectors/" },
+  { title: "Schemas", description: "JSON schemas for artifacts and decisions", href: "/resources/schemas/" },
+  { title: "Key management", description: "Key lifecycle spec", href: "/resources/specs/keymgmt/" }
+]} />
+
+<CTABanner
+  title="Ready to go deeper?"
+  primaryCta={{ label: "Full spec suite", href: "/resources/specs/" }}
+  secondaryCta={{ label: "Protocol overview", href: "/developers/protocol/" }}
+/>

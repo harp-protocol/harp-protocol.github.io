@@ -1,0 +1,584 @@
+---
+title: "Schemas — HARP"
+description: "Normative JSON schemas for HARP artifacts, decisions, and protocol messages."
+---
+
+import HeroSmall from "~/components/harp/HeroSmall.astro";
+import Callout from "~/components/harp/Callout.astro";
+
+<HeroSmall
+  title="JSON <em>Schemas</em>"
+  subtitle="Normative schemas for validating HARP protocol messages."
+/>
+
+<Callout variant="info" title="Machine-readable source">
+  These schemas are maintained in the [harp-spec GitHub repository](https://github.com/harp-protocol/harp-spec).
+</Callout>
+
+## CORE layer
+
+### Artifact
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp-protocol.org/schemas/harp-core/artifact.json",
+  "title": "HARP-CORE Artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "artifactType",
+    "repoRef",
+    "payload",
+    "createdAt",
+    "expiresAt",
+    "artifactHashAlg",
+    "artifactHash"
+  ],
+  "properties": {
+    "requestId": {
+      "type": "string",
+      "description": "Globally unique identifier (UUID or ULID)."
+    },
+    "sessionId": {
+      "type": "string",
+      "description": "Optional session identifier (UUID or ULID)."
+    },
+    "artifactType": {
+      "type": "string",
+      "enum": [
+        "plan.review",
+        "task.review",
+        "patch.review",
+        "command.review",
+        "checkpoint.review"
+      ]
+    },
+    "repoRef": {
+      "type": "string",
+      "description": "Opaque repository reference agreed by participants."
+    },
+    "baseRevision": {
+      "type": "string",
+      "description": "Optional base revision identifier (commit SHA, tag, etc.)."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Plaintext payload prior to encryption. Canonicalized for hashing."
+    },
+    "artifactHashAlg": {
+      "type": "string",
+      "enum": [
+        "SHA-256"
+      ]
+    },
+    "artifactHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Hex SHA-256 of canonical artifact-without artifactHash field (see spec)."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional non-sensitive metadata; MUST be included in canonicalization if present."
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Optional extension fields under namespaced keys."
+    }
+  }
+}
+```
+
+### Decision
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp-protocol.org/schemas/harp-core/decision.json",
+  "title": "HARP-CORE Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "artifactHashAlg",
+    "artifactHash",
+    "repoRef",
+    "decision",
+    "scope",
+    "expiresAt",
+    "nonce",
+    "sigAlg",
+    "signerKeyId",
+    "signature"
+  ],
+  "properties": {
+    "requestId": {
+      "type": "string"
+    },
+    "artifactHashAlg": {
+      "type": "string",
+      "enum": [
+        "SHA-256"
+      ]
+    },
+    "artifactHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repoRef": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "allow",
+        "deny"
+      ]
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "once",
+        "timebox",
+        "session"
+      ]
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nonce": {
+      "type": "string",
+      "description": "Opaque nonce, base64url recommended."
+    },
+    "sigAlg": {
+      "type": "string",
+      "enum": [
+        "Ed25519"
+      ]
+    },
+    "signerKeyId": {
+      "type": "string",
+      "description": "Key identifier (KID)."
+    },
+    "signature": {
+      "type": "string",
+      "description": "Signature over canonical DecisionSignable (base64url)."
+    },
+    "policyHints": {
+      "type": "object",
+      "description": "Optional policy-related metadata included in signing input if present."
+    }
+  }
+}
+```
+
+## PROMPT layer
+
+### Envelope
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp-protocol.org/schemas/harp-core/envelope.json",
+  "title": "HARP-CORE Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "envelopeId",
+    "msgType",
+    "sender",
+    "recipient",
+    "createdAt",
+    "body"
+  ],
+  "properties": {
+    "envelopeId": {
+      "type": "string"
+    },
+    "msgType": {
+      "type": "string",
+      "enum": [
+        "artifact.submit",
+        "decision.submit",
+        "error"
+      ]
+    },
+    "sender": {
+      "type": "object",
+      "required": [
+        "actor",
+        "deviceId"
+      ],
+      "properties": {
+        "actor": {
+          "type": "string",
+          "enum": [
+            "HE",
+            "MA",
+            "GW"
+          ]
+        },
+        "deviceId": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "recipient": {
+      "type": "object",
+      "required": [
+        "actor",
+        "deviceId"
+      ],
+      "properties": {
+        "actor": {
+          "type": "string",
+          "enum": [
+            "HE",
+            "MA",
+            "GW"
+          ]
+        },
+        "deviceId": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "body": {
+      "type": "object"
+    },
+    "trace": {
+      "type": "object"
+    }
+  }
+}
+```
+
+### Prompt Send
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp-protocol.org/schemas/harp-prompt/prompt-send.json",
+  "title": "HARP-PROMPT prompt.send Artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "artifactType",
+    "createdAt",
+    "target",
+    "text",
+    "promptHashAlg",
+    "promptHash"
+  ],
+  "properties": {
+    "requestId": {
+      "type": "string",
+      "description": "Globally unique identifier (UUID or ULID)."
+    },
+    "sessionId": {
+      "type": "string",
+      "description": "Optional session identifier (UUID or ULID)."
+    },
+    "repoRef": {
+      "type": "string",
+      "description": "Optional opaque repository reference."
+    },
+    "artifactType": {
+      "type": "string",
+      "const": "prompt.send"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "target": {
+      "type": "string",
+      "enum": [
+        "agentChat",
+        "composer",
+        "tool",
+        "other"
+      ],
+      "description": "Prompt destination within the AI agent UX."
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Plaintext prompt prior to encryption."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional metadata (non-sensitive recommended). Included in hashing if present."
+    },
+    "promptHashAlg": {
+      "type": "string",
+      "enum": [
+        "SHA-256"
+      ]
+    },
+    "promptHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Hex SHA-256 over canonical PromptSignable (see spec)."
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Optional extension fields under namespaced keys."
+    }
+  }
+}
+```
+
+### Prompt Ack
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp-protocol.org/schemas/harp-prompt/prompt-ack.json",
+  "title": "HARP-PROMPT prompt.ack",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "promptHash",
+    "status",
+    "ackAt"
+  ],
+  "properties": {
+    "requestId": {
+      "type": "string"
+    },
+    "promptHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "delivered",
+        "rejected",
+        "expired",
+        "error"
+      ]
+    },
+    "ackAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "details": {
+      "type": "object"
+    }
+  }
+}
+```
+
+## SESSION layer
+
+### Session Start
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp-protocol.org/schemas/harp-session/session-start.json",
+  "title": "HARP-SESSION session.start",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sessionId",
+    "eventType",
+    "createdAt",
+    "agentHost"
+  ],
+  "properties": {
+    "sessionId": {
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string",
+      "const": "session.start"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "agentHost": {
+      "type": "string"
+    },
+    "repoRef": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}
+```
+
+### Session Snapshot
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp-protocol.org/schemas/harp-session/session-snapshot.json",
+  "title": "HARP-SESSION session.snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sessionId",
+    "eventType",
+    "snapshotId",
+    "snapshotType",
+    "createdAt",
+    "snapshotHashAlg",
+    "snapshotHash",
+    "payload"
+  ],
+  "properties": {
+    "sessionId": {
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string",
+      "const": "session.snapshot"
+    },
+    "snapshotId": {
+      "type": "string"
+    },
+    "snapshotType": {
+      "type": "string",
+      "enum": [
+        "summary",
+        "plan",
+        "diff_summary",
+        "context"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "snapshotHashAlg": {
+      "type": "string",
+      "enum": [
+        "SHA-256"
+      ]
+    },
+    "snapshotHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}
+```
+
+### Session Status
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp-protocol.org/schemas/harp-session/session-status.json",
+  "title": "HARP-SESSION session.status",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sessionId",
+    "eventType",
+    "state",
+    "updatedAt"
+  ],
+  "properties": {
+    "sessionId": {
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string",
+      "const": "session.status"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "idle",
+        "planning",
+        "editing",
+        "executing",
+        "waiting_approval",
+        "error"
+      ]
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "details": {
+      "type": "object"
+    }
+  }
+}
+```
+
+### Session End
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp-protocol.org/schemas/harp-session/session-end.json",
+  "title": "HARP-SESSION session.end",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sessionId",
+    "eventType",
+    "endedAt",
+    "reason"
+  ],
+  "properties": {
+    "sessionId": {
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string",
+      "const": "session.end"
+    },
+    "endedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "user_end",
+        "timeout",
+        "policy_kill"
+      ]
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}
+```
+

@@ -1,0 +1,121 @@
+{
+  "main": [
+    {
+      "label": "Spec",
+      "items": [
+        {
+          "label": "Spec Overview",
+          "slug": "product"
+        },
+        {
+          "label": "How it works",
+          "slug": "how-it-works"
+        },
+        {
+          "label": "Security",
+          "slug": "security"
+        },
+        {
+          "label": "Integrations",
+          "slug": "integrations"
+        }
+      ]
+    },
+    {
+      "label": "Developers",
+      "items": [
+        {
+          "label": "Quickstart",
+          "slug": "developers/quickstart"
+        },
+        {
+          "label": "Protocol",
+          "slug": "developers/protocol"
+        }
+      ]
+    },
+    {
+      "label": "Resources",
+      "items": [
+        {
+          "label": "Specifications",
+          "items": [
+            {
+              "label": "Overview",
+              "slug": "resources/specs"
+            },
+            {
+              "label": "HARP-CORE",
+              "slug": "resources/specs/core"
+            },
+            {
+              "label": "CORE Test Vectors",
+              "slug": "resources/specs/core-test-vectors"
+            },
+            {
+              "label": "HARP-PROMPT",
+              "slug": "resources/specs/prompt"
+            },
+            {
+              "label": "PROMPT Test Vectors",
+              "slug": "resources/specs/prompt-test-vectors"
+            },
+            {
+              "label": "HARP-SESSION",
+              "slug": "resources/specs/session"
+            },
+            {
+              "label": "SESSION Test Vectors",
+              "slug": "resources/specs/session-test-vectors"
+            },
+            {
+              "label": "HARP-TRANSPORT",
+              "slug": "resources/specs/transport"
+            },
+            {
+              "label": "HARP-KEYMGMT",
+              "slug": "resources/specs/keymgmt"
+            },
+            {
+              "label": "HARP-THREATMODEL",
+              "slug": "resources/specs/threatmodel"
+            },
+            {
+              "label": "HARP-COMPLIANCE",
+              "slug": "resources/specs/compliance"
+            },
+            {
+              "label": "HARP-GOVERNANCE",
+              "slug": "resources/specs/governance"
+            }
+          ]
+        },
+        {
+          "label": "Schemas",
+          "slug": "resources/schemas"
+        },
+        {
+          "label": "Test vectors",
+          "slug": "resources/test-vectors"
+        },
+        {
+          "label": "Changelog",
+          "slug": "resources/changelog"
+        }
+      ]
+    },
+    {
+      "label": "Contact",
+      "items": [
+        {
+          "label": "About",
+          "slug": "company/about"
+        },
+        {
+          "label": "Contact",
+          "slug": "company/contact"
+        }
+      ]
+    }
+  ]
+}

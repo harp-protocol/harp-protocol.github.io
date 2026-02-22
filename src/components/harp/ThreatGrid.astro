@@ -1,0 +1,27 @@
+---
+/**
+ * ThreatGrid — threat→mitigation paired cards.
+ * Props: threats array of { threat, label, mitigation }
+ */
+interface Props {
+  threats: { label: string; threat: string; mitigation: string }[];
+}
+
+const { threats } = Astro.props;
+---
+
+<div class="harp-threat-grid">
+  {threats.map((t) => (
+    <div class="harp-threat-grid__item">
+      <div class="harp-threat-grid__threat">
+        <span class="harp-threat-grid__label">{t.label}</span>
+        <p>{t.threat}</p>
+      </div>
+      <div class="harp-threat-grid__arrow">→</div>
+      <div class="harp-threat-grid__mitigation">
+        <span class="harp-threat-grid__label">Mitigation</span>
+        <p>{t.mitigation}</p>
+      </div>
+    </div>
+  ))}
+</div>

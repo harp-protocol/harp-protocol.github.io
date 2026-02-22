@@ -1,0 +1,48 @@
+---
+title: "Specifications — HARP"
+description: "The complete HARP specification suite: CORE, PROMPT, SESSION, TRANSPORT, KEYMGMT, THREATMODEL, GOVERNANCE, and COMPLIANCE."
+---
+
+import HeroSmall from "~/components/harp/HeroSmall.astro";
+import LinkCards from "~/components/harp/LinkCards.astro";
+import Callout from "~/components/harp/Callout.astro";
+
+<HeroSmall
+  title="Specification <em>suite</em>"
+  subtitle="The complete HARP v0.2 specification. Each document is self-contained and normative."
+/>
+
+<Callout variant="draft" title="Draft v0.2">
+  These specifications are standards-track drafts. Normative language (MUST, SHOULD, MAY) indicates intended behavior for conforming implementations.
+</Callout>
+
+## Core specifications
+
+<LinkCards cards={[
+  { title: "HARP-CORE", description: "Artifact hashing, decision signing, and signature verification", href: "/resources/specs/core/" },
+  { title: "HARP-PROMPT", description: "Prompt classification, hash computation, and metadata tagging", href: "/resources/specs/prompt/" },
+  { title: "HARP-SESSION", description: "Session lifecycle, snapshot hashing, and state management", href: "/resources/specs/session/" },
+]} />
+
+## Infrastructure specifications
+
+<LinkCards cards={[
+  { title: "HARP-TRANSPORT", description: "Wire protocol, gateway routing, and E2E encryption", href: "/resources/specs/transport/" },
+  { title: "HARP-KEYMGMT", description: "Key generation, rotation, device binding, and storage", href: "/resources/specs/keymgmt/" },
+]} />
+
+## Governance & compliance
+
+<LinkCards cards={[
+  { title: "HARP-THREATMODEL", description: "Threat analysis and mitigation requirements", href: "/resources/specs/threatmodel/" },
+  { title: "HARP-GOVERNANCE", description: "Specification governance process and versioning", href: "/resources/specs/governance/" },
+  { title: "HARP-COMPLIANCE", description: "Conformance levels and test requirements", href: "/resources/specs/compliance/" },
+]} />
+
+## Test vectors
+
+<LinkCards cards={[
+  { title: "CORE test vectors", description: "Artifact hash and decision signature vectors", href: "/resources/specs/core-test-vectors/" },
+  { title: "PROMPT test vectors", description: "Prompt hash computation vectors", href: "/resources/specs/prompt-test-vectors/" },
+  { title: "SESSION test vectors", description: "Session snapshot hash vectors", href: "/resources/specs/session-test-vectors/" },
+]} />

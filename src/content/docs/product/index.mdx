@@ -1,0 +1,79 @@
+---
+title: "Spec Overview — HARP"
+description: "HARP is the human control layer for autonomous AI agents. Approve from your phone, enforce at the desktop."
+---
+
+import HeroSmall from "~/components/harp/HeroSmall.astro";
+import FeatureGrid from "~/components/harp/FeatureGrid.astro";
+import FeatureCard from "~/components/harp/FeatureCard.astro";
+import Callout from "~/components/harp/Callout.astro";
+import CTABanner from "~/components/harp/CTABanner.astro";
+
+<HeroSmall
+  title="The human authorization standard <em>for AI agents</em>"
+  subtitle="AI agents are autonomous. HARP makes every action reviewable and every approval cryptographically verifiable — from a separate human-controlled device."
+/>
+
+## The problem
+
+Today's AI coding agents can generate plans, modify files, apply diffs, run commands, commit code, and deploy infrastructure. But approvals happen inside the same IDEs, terminals and servers the agent controls — a button click with no cryptographic meaning.
+
+**No binding between what was reviewed and what executed.** No out-of-band verification. No enterprise governance.
+
+## How HARP solves it
+
+<FeatureGrid columns={2}>
+  <FeatureCard title="Deterministic artifacts" icon="document">
+    Every agent action (plan, patch, command, checkpoint) becomes a canonical, hashable artifact with a stable identity.
+  </FeatureCard>
+  <FeatureCard title="Out-of-band approval" icon="phone">
+    Artifacts are encrypted end-to-end to a mobile device. The human reviews and signs on a device the agent cannot control.
+  </FeatureCard>
+  <FeatureCard title="Cryptographic binding" icon="pencil">
+    The signature is mathematically bound to the exact artifact hash, scope, and expiry. Substitution is detectable.
+  </FeatureCard>
+  <FeatureCard title="Local enforcement" icon="shield">
+    The desktop enforcer verifies everything locally before execution. If verification fails, it fails closed.
+  </FeatureCard>
+</FeatureGrid>
+
+## What HARP prevents
+
+<FeatureGrid columns={2}>
+  <FeatureCard title="Substitution" icon="shuffle">
+    Approve A, execute B? Not possible — the Decision is bound to the artifact hash.
+  </FeatureCard>
+  <FeatureCard title="Replay" icon="refresh">
+    Reuse an old approval? Blocked by nonce, expiry, and replay cache.
+  </FeatureCard>
+  <FeatureCard title="In-band compromise" icon="desktop">
+    Agent controls the IDE? Doesn't matter — signing keys are on your phone.
+  </FeatureCard>
+  <FeatureCard title="Enforcement bypass" icon="ban">
+    Execute without verification? Blocked at the local enforcement boundary.
+  </FeatureCard>
+</FeatureGrid>
+
+<Callout variant="info" title="What HARP doesn't try to be">
+  Not a UI standard for review screens. Not a full PKI — but it specifies key lifecycle requirements. Not a monolithic platform — integrate the pieces you need.
+</Callout>
+
+## Who needs HARP
+
+<FeatureGrid columns={3}>
+  <FeatureCard title="Engineering teams" icon="users">
+    Developers using AI agents for coding, refactoring, and deployment.
+  </FeatureCard>
+  <FeatureCard title="Enterprise security" icon="building">
+    Organizations requiring governance, auditability, and compliance for AI-assisted workflows.
+  </FeatureCard>
+  <FeatureCard title="Agent platform vendors" icon="robot">
+    IDE and agent vendors who need an open, interoperable human authorization layer.
+  </FeatureCard>
+</FeatureGrid>
+
+<CTABanner
+  title="Explore the full spec suite"
+  primaryCta={{ label: "Get started", href: "/developers/quickstart/" }}
+  secondaryCta={{ label: "View specs (v0.2)", href: "/resources/specs/" }}
+/>

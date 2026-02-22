@@ -1,0 +1,25 @@
+{
+  "site": {
+    "title": "HARP",
+    "logo": "/src/assets/harp-light.png",
+    "logo_darkmode": "/src/assets/harp-dark.png",
+    "logo_width": "127",
+    "logo_height": "32",
+    "logo_text": "HARP"
+  },
+  "settings": {
+    "search": true,
+    "theme_switcher": true
+  },
+  "params": {
+    "footer_contact": {
+      "enable": false
+    },
+    "copyright": "HARP — Human Authorization & Review Protocol. &copy; <span class='year'></span>"
+  },
+  "navigation_button": {
+    "enable": true,
+    "label": "Get started",
+    "link": "/developers/quickstart/"
+  }
+}

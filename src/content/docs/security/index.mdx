@@ -1,0 +1,76 @@
+---
+title: "Security — HARP"
+description: "HARP's security model: crypto binding, out-of-band approval, zero-knowledge relay, and fail-closed enforcement."
+---
+
+import HeroSmall from "~/components/harp/HeroSmall.astro";
+import ThreatGrid from "~/components/harp/ThreatGrid.astro";
+import FeatureGrid from "~/components/harp/FeatureGrid.astro";
+import FeatureCard from "~/components/harp/FeatureCard.astro";
+import Callout from "~/components/harp/Callout.astro";
+import Checklist from "~/components/harp/Checklist.astro";
+import CTABanner from "~/components/harp/CTABanner.astro";
+
+<HeroSmall
+  title="Security by <em>design</em>"
+  subtitle="Separate trust boundaries. Cryptographic binding. Zero-knowledge relay. Fail-closed enforcement."
+/>
+
+## Threat model
+
+<ThreatGrid threats={[
+  { threat: "Substitution", description: "Approve A, execute B", mitigation: "Decision signature bound to artifact hash" },
+  { threat: "Replay", description: "Reuse old approval for a new action", mitigation: "Nonce + expiry + replay cache" },
+  { threat: "In-band compromise", description: "Agent controls the IDE approval UI", mitigation: "Approval on a separate mobile device" },
+  { threat: "Gateway snooping", description: "Relay inspects code or diffs", mitigation: "E2E encryption; gateway sees only ciphertext" },
+  { threat: "Enforcement bypass", description: "Execute without approval check", mitigation: "Mandatory local enforcer gating" },
+  { threat: "Key forgery", description: "Forge a valid approval signature", mitigation: "Ed25519 with device-bound private keys" }
+]} />
+
+## Why out-of-band authorization
+
+<FeatureGrid columns={2}>
+  <FeatureCard title="Separate device = separate trust" icon="phone">
+    The signing key lives on your phone. Not on the machine where the agent runs. Even a fully compromised IDE cannot sign approvals.
+  </FeatureCard>
+  <FeatureCard title="Human attention, not UI clicks" icon="eye">
+    You review the artifact on a dedicated screen. No chance of auto-approve scripts, UI spoofing, or clickjacking.
+  </FeatureCard>
+</FeatureGrid>
+
+## Cryptographic posture
+
+<FeatureGrid columns={3}>
+  <FeatureCard title="Ed25519 signatures" icon="pencil">
+    All decisions signed with Ed25519. Base64url-encoded, verified at the desktop enforcer.
+  </FeatureCard>
+  <FeatureCard title="SHA-256 artifact hashes" icon="hash">
+    Deterministic canonical JSON → SHA-256. Platform-independent. 64 lowercase hex characters.
+  </FeatureCard>
+  <FeatureCard title="X25519 + AEAD encryption" icon="key">
+    End-to-end encryption via ECDH key agreement. AES-256-GCM or ChaCha20-Poly1305.
+  </FeatureCard>
+</FeatureGrid>
+
+## What HARP does not mitigate
+
+<Callout variant="warning" title="Operational risks remain">
+  HARP does not protect against: compromised Mobile Approver device, compromised HARP Enforcer binary, insider threats with legitimately provisioned keys, or OS-level compromise on either device. Operational security controls are always required.
+</Callout>
+
+## Enterprise security checklist
+
+<Checklist items={[
+  "Use hardware-backed key storage (Secure Enclave, Android Keystore, TPM)",
+  "Enable mTLS for gateway communication",
+  "Enforce key rotation (recommended: annually or on device loss)",
+  "Monitor and alert on signature verification failures",
+  "Log all approval events with integrity-protected audit trail",
+  "Conduct periodic code audits of the HARP Enforcer"
+]} />
+
+<CTABanner
+  title="Read the threat model"
+  primaryCta={{ label: "HARP-THREATMODEL spec", href: "/resources/specs/threatmodel/" }}
+  secondaryCta={{ label: "Key management spec", href: "/resources/specs/keymgmt/" }}
+/>
