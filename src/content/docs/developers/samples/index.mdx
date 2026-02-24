@@ -1,0 +1,171 @@
+---
+title: "Samples — HARP"
+description: "Multi-language reference implementations of the HARP protocol: C#, Node.js, Python, TypeScript, Go, and Rust."
+---
+
+import HeroSmall from "~/components/harp/HeroSmall.astro";
+import FeatureGrid from "~/components/harp/FeatureGrid.astro";
+import FeatureCard from "~/components/harp/FeatureCard.astro";
+import Steps from "~/components/harp/Steps.astro";
+import Callout from "~/components/harp/Callout.astro";
+import LinkCards from "~/components/harp/LinkCards.astro";
+import CTABanner from "~/components/harp/CTABanner.astro";
+import Checklist from "~/components/harp/Checklist.astro";
+
+<HeroSmall
+  title="Reference <em>implementations</em>"
+  subtitle="Working samples of the HARP-CORE spec in six languages — all wire-compatible."
+/>
+
+## Language implementations
+
+All six implementations produce **wire-compatible** artifacts and decisions — encrypted by any one, decryptable by any other — provided the same key material is used.
+
+<FeatureGrid columns={3}>
+  <FeatureCard title="C# (.NET 8)" icon="code">
+    Crypto: NSec (libsodium) · Runner: <code>dotnet run</code><br/>
+    <a href="https://github.com/harp-protocol/samples/tree/main/src/csharp" target="_blank">View source →</a>
+  </FeatureCard>
+  <FeatureCard title="Node.js (ESM)" icon="code">
+    Crypto: libsodium-wrappers-sumo + node:crypto · Runner: <code>node</code><br/>
+    <a href="https://github.com/harp-protocol/samples/tree/main/src/node" target="_blank">View source →</a>
+  </FeatureCard>
+  <FeatureCard title="Python (3.9+)" icon="code">
+    Crypto: PyNaCl + hashlib · Runner: <code>python</code><br/>
+    <a href="https://github.com/harp-protocol/samples/tree/main/src/python" target="_blank">View source →</a>
+  </FeatureCard>
+  <FeatureCard title="TypeScript (strict)" icon="code">
+    Crypto: libsodium-wrappers-sumo + node:crypto · Runner: <code>tsx</code><br/>
+    <a href="https://github.com/harp-protocol/samples/tree/main/src/typescript" target="_blank">View source →</a>
+  </FeatureCard>
+  <FeatureCard title="Go (1.26+)" icon="code">
+    Crypto: x/crypto + crypto/ed25519 (stdlib) · Runner: <code>go run</code><br/>
+    <a href="https://github.com/harp-protocol/samples/tree/main/src/go" target="_blank">View source →</a>
+  </FeatureCard>
+  <FeatureCard title="Rust (2021 ed.)" icon="code">
+    Crypto: RustCrypto (pure Rust, no C deps) · Runner: <code>cargo run</code><br/>
+    <a href="https://github.com/harp-protocol/samples/tree/main/src/rust" target="_blank">View source →</a>
+  </FeatureCard>
+</FeatureGrid>
+
+## Quick start — 4-step demo flow
+
+Every implementation follows the same flow:
+
+<Steps steps={[
+  { title: "Generate MA keys (first run only)", description: "Run the approver binary once to generate the Mobile Approver's Ed25519 signing and X25519 key-exchange keypairs." },
+  { title: "Build & encrypt artifact", description: "Run the executor to create a sample artifact, canonicalize it (RFC 8785 JCS), compute SHA-256 hash, and encrypt via X25519 + XChaCha20-Poly1305." },
+  { title: "Decrypt, review & sign", description: "Run the approver again — it decrypts the artifact, displays it for review, and signs a Decision with Ed25519 upon approval." },
+  { title: "Verify signature & enforce", description: "Run the enforcer to verify the Ed25519 signature, check artifact hash binding, validate expiry, and check the nonce journal for replays." }
+]} />
+
+### Runner commands per language
+
+| Language | Approver (Steps 1 & 3) | Executor (Step 2) | Enforcer (Step 4) |
+|----------|------------------------|--------------------|--------------------|
+| C# | `dotnet run --project Harp.Approver` | `dotnet run --project Harp.Executor` | `dotnet run --project Harp.Enforcer` |
+| Node.js | `node harp-approver.mjs` | `node harp-executor.mjs` | `node harp-enforcer.mjs` |
+| Python | `python harp_approver.py` | `python harp_executor.py` | `python harp_enforcer.py` |
+| TypeScript | `npx tsx src/harp-approver.ts` | `npx tsx src/harp-executor.ts` | `npx tsx src/harp-enforcer.ts` |
+| Go | `go run ./cmd/harp-approver/` | `go run ./cmd/harp-executor/` | `go run ./cmd/harp-enforcer/` |
+| Rust | `cargo run --bin harp-approver` | `cargo run --bin harp-executor` | `cargo run --bin harp-enforcer` |
+
+## Cryptographic architecture
+
+All implementations share the same cryptographic stack:
+
+| Function | Algorithm | Purpose |
+|----------|-----------|---------|
+| Key Exchange | **X25519** | Derive shared secret between HE and MA |
+| Key Derivation | **HKDF-SHA256** | Derive symmetric AEAD key from shared secret |
+| Payload Encryption | **XChaCha20-Poly1305** | AEAD encryption of artifact payload |
+| Artifact Hashing | **SHA-256** | Deterministic hash of canonicalized artifact |
+| Decision Signing | **Ed25519** | Human-bound cryptographic approval signature |
+| Canonicalization | **RFC 8785 (JCS)** | Deterministic JSON for cross-platform hash agreement |
+
+## Wire format
+
+### artifact-wire.json
+
+```json
+{
+  "requestId": "...",
+  "artifactType": "command.review",
+  "repoRef": "repo:opaque:demo",
+  "createdAt": "2026-02-24T...",
+  "expiresAt": "2026-02-24T...",
+  "artifactHashAlg": "SHA-256",
+  "artifactHash": "<64-hex>",
+  "enc": {
+    "kdf": "X25519+HKDF-SHA256",
+    "encAlg": "XChaCha20-Poly1305",
+    "maKxPub": "<base64url>",
+    "heKxPub": "<base64url>",
+    "salt": "<base64url>",
+    "info": "HARP-XCHACHA-PAYLOAD-V1",
+    "nonce": "<base64url>",
+    "ciphertext": "<base64url>",
+    "tag": "<base64url>"
+  }
+}
+```
+
+### decision.json
+
+```json
+{
+  "requestId": "...",
+  "artifactHashAlg": "SHA-256",
+  "artifactHash": "<64-hex>",
+  "repoRef": "repo:opaque:demo",
+  "decision": "allow",
+  "scope": "once",
+  "expiresAt": "2026-02-24T...",
+  "nonce": "<base64url>",
+  "sigAlg": "Ed25519",
+  "signerKeyId": "ma-key-1",
+  "signature": "<base64url>"
+}
+```
+
+## Security guarantees
+
+<Checklist items={[
+  "Confidential payload — XChaCha20-Poly1305 AEAD with X25519 key exchange",
+  "Integrity — AEAD authentication + AAD binding",
+  "Cryptographic approval binding — Ed25519 signature over artifactHash",
+  "Signature authenticity — Ed25519 verification with known signerKeyId",
+  "Replay resistance — Nonce journal + expiration enforcement",
+  "Deterministic canonicalization — RFC 8785 JCS for cross-platform hash agreement"
+]} />
+
+## Testable failure scenarios
+
+Each implementation supports 7 rejection scenarios:
+
+1. **Replay detection** — Run enforcer twice; nonce journal blocks reuse
+2. **Deny decision** — Type `n` at approval prompt; enforcer exits with code 2
+3. **Tampered artifact** — Edit `repoRef` in `artifact-wire.json`; hash mismatch
+4. **Tampered decision** — Edit `decision` field without re-signing; signature fails
+5. **Expired artifact/decision** — Wait beyond TTL; expiry check rejects
+6. **Wrong key** — Regenerate keys; old decision signature fails
+7. **Binding mismatch** — Edit `requestId` in `decision.json`; binding check fails
+
+<Callout variant="warning" title="Demo implementations">
+  These are reference implementations for learning and testing. For production, consider secure key storage (HSM), mTLS transport, structured logging, multi-approver quorum, and key rotation.
+</Callout>
+
+## Resources
+
+<LinkCards cards={[
+  { title: "GitHub — harp-protocol/samples", description: "Source code for all six implementations", href: "https://github.com/harp-protocol/samples" },
+  { title: "HARP-CORE spec", description: "Full specification", href: "/resources/specs/core/" },
+  { title: "Developer quickstart", description: "Build your first integration", href: "/developers/quickstart/" },
+  { title: "Test vectors", description: "Canonical JSON and signing vectors", href: "/resources/specs/core-test-vectors/" }
+]} />
+
+<CTABanner
+  title="Explore the source"
+  primaryCta={{ label: "View on GitHub", href: "https://github.com/harp-protocol/samples" }}
+  secondaryCta={{ label: "Developer quickstart", href: "/developers/quickstart/" }}
+/>

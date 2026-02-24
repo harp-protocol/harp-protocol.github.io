@@ -31,6 +31,10 @@
         {
           "label": "Protocol",
           "slug": "developers/protocol"
+        },
+        {
+          "label": "Samples",
+          "slug": "developers/samples"
         }
       ]
     },

@@ -35,6 +35,10 @@
         {
           "name": "Protocol",
           "url": "/developers/protocol/"
+        },
+        {
+          "name": "Samples",
+          "url": "/developers/samples/"
         }
       ]
     },
@@ -102,6 +106,10 @@
         {
           "name": "Protocol",
           "url": "/developers/protocol/"
+        },
+        {
+          "name": "Samples",
+          "url": "/developers/samples/"
         },
         {
           "name": "Specs",
