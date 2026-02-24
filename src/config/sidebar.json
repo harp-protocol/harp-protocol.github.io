@@ -77,6 +77,14 @@
               "slug": "resources/specs/transport"
             },
             {
+              "label": "HARP-GATEWAY",
+              "slug": "resources/specs/gateway"
+            },
+            {
+              "label": "HARP-GATEWAY-HTTP",
+              "slug": "resources/specs/gateway-http"
+            },
+            {
               "label": "HARP-KEYMGMT",
               "slug": "resources/specs/keymgmt"
             },
