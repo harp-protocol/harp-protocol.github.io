@@ -111,15 +111,18 @@ The HARP Enforcer is the primary enforcement boundary.
 
 Threat:
 - Attacker impersonates Mobile Approver.
+- Attacker spoofs pairing code to intercept routing token.
 
 Mitigation:
 - Ed25519 signature verification
 - signerKeyId binding
 - Secure provisioning
 - Revocation enforcement
+- Short-lived, single-use pairing codes with out-of-band verification
 
 Residual risk:
 - MA private key compromise
+- Pairing code interception during display
 
 ---
 
@@ -160,15 +163,20 @@ Residual risk:
 Threat:
 - Gateway inspects artifact content.
 - Transport leakage.
+- Presence records expose enforcer connectivity patterns, workspace names, and capabilities.
+- Metadata forwarding misconfiguration leaks routing tokens to Approvers.
 
 Mitigation:
 - Zero-knowledge compatibility
 - Optional E2E encryption
 - TLS enforcement
+- Metadata forwarding policy (HARP-GW §6.3): routing-sensitive keys MUST be stripped
+- Presence endpoint scoped to authenticated tenant
 
 Residual risk:
 - Metadata leakage
 - Traffic analysis
+- Presence timing correlation
 
 ---
 
@@ -177,11 +185,15 @@ Residual risk:
 Threat:
 - Flooding artifact or prompt submissions.
 - Replay attempts.
+- Presence endpoint flooding.
+- Pairing code brute-force attempts.
 
 Mitigation:
 - Rate limiting
 - Idempotency enforcement
 - Replay cache
+- Pairing code entropy (≥ 6 alphanumeric characters)
+- Short-lived pairing sessions
 
 Residual risk:
 - Large-scale distributed attacks
@@ -231,12 +243,17 @@ Risks:
 - Message reordering
 - Message dropping
 - Metadata observation
+- Pairing session hijacking
+- Presence metadata observation (enforcer connectivity patterns)
+- Metadata forwarding misconfiguration (routing tokens exposed to Approvers)
 
 Mitigations:
 - Signature validation at HE
 - Idempotency
 - Replay protection
 - Optional E2E encryption
+- Metadata forwarding policy enforcement (HARP-GW §6.3)
+- Single-use pairing codes with expiry
 
 ---
 

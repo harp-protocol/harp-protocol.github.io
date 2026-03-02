@@ -168,6 +168,51 @@ extensions.harp.*
 
 ---
 
+## 3.5 Metadata Key Registry
+
+Maintains well-known metadata keys used in gateway envelope `body.metadata` for routing and display purposes.
+
+Initial entries:
+
+| Key | Semantics | Category |
+|---|---|---|
+| `routingToken` | Opaque token binding Enforcer to Approver | Routing-sensitive |
+| `workspaceName` | Human-readable workspace/organization name | Display-safe |
+| `repoName` | Human-readable repository or project name | Display-safe |
+| `enforcerLabel` | Human-readable label for the Enforcer instance | Display-safe |
+| `tenantHint` | Opaque tenant identifier for multi-tenant routing | Policy-dependent |
+
+See HARP-GW §6.3 for forwarding rules (routing-sensitive keys MUST be stripped; display-safe keys SHOULD be forwarded).
+
+New entries require governance approval.
+
+---
+
+## 3.6 Message Type Registry
+
+Maintains valid `msgType` values used in HARP Envelopes and WebSocket control messages.
+
+Core entries:
+
+- `artifact.submit`
+- `artifact.accepted`
+- `decision.submit`
+- `decision.accepted`
+- `decision.deliver`
+- `approval.request`
+- `ack.submit`
+- `ack.accepted`
+- `inbox.page`
+- `exchange.status`
+- `exchange.withdrawn`
+- `hello` (WebSocket control message, not a full Envelope)
+- `refresh.request` (WebSocket control message, not a full Envelope)
+- `error`
+
+New entries require governance approval.
+
+---
+
 # 4. Change Control Process
 
 ## 4.1 Proposal Lifecycle

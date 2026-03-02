@@ -262,3 +262,7 @@ See `HARP_CORE_Test_Vectors_v0_2.md`.
 - Prefer ULID for requestId/sessionId for traceability.
 - Keep `repoRef` opaque (avoid leaking repo URLs to GW).
 - Use monotonic clocks where possible for expiry evaluation.
+- **Metadata layering:** HARP defines two distinct metadata layers:
+  - **Artifact-level metadata** (`metadata` field inside the Artifact object): included in canonicalization and `artifactHash` computation. This metadata is part of the signed, encrypted artifact and is not visible to the Gateway.
+  - **Gateway envelope metadata** (`body.metadata` in the gateway envelope): cleartext metadata attached to the envelope for routing and display purposes. This metadata is subject to the Gateway's forwarding policy (see [HARP-GW §6.3](/resources/specs/gateway/#63-metadata-forwarding-policy)).
+- Use well-known metadata keys (`workspaceName`, `repoName`, `enforcerLabel`) for human-friendly context in Approval Requests without leaking sensitive identifiers like `repoRef`. See [HARP-GW §6.4](/resources/specs/gateway/#64-well-known-metadata-keys) for the interoperability registry.

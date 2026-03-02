@@ -582,3 +582,121 @@ import Callout from "~/components/harp/Callout.astro";
 }
 ```
 
+## GATEWAY layer
+
+### Gateway Envelope (Wire)
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp-protocol.org/schemas/harp-gateway/envelope.json",
+  "title": "HARP Gateway Envelope (Wire)",
+  "type": "object",
+  "required": [
+    "msgType",
+    "requestId",
+    "createdAt",
+    "sender",
+    "body"
+  ],
+  "properties": {
+    "msgId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "msgType": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sender": {
+      "type": "object",
+      "properties": {
+        "enforcerId": { "type": "string" },
+        "approverId": { "type": "string" },
+        "gatewayId": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "recipient": {
+      "type": "object",
+      "properties": {
+        "enforcerId": { "type": "string" },
+        "approverId": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "trace": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "body": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+### Exchange Status
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp-protocol.org/schemas/harp-gateway/exchange-status.json",
+  "title": "Exchange Status Body",
+  "type": "object",
+  "required": [
+    "requestId",
+    "state",
+    "createdAt",
+    "expiresAt"
+  ],
+  "properties": {
+    "requestId": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "pendingApproval",
+        "decided",
+        "delivered",
+        "expired",
+        "withdrawn",
+        "cancelled"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "artifactHash": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+

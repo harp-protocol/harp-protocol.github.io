@@ -73,6 +73,8 @@ POST /v1/session/event
 GET  /v1/session/{sessionId}
 GET  /v1/status
 
+> **Note:** The HARP-GW HTTP Binding defines its own extended endpoint set (15+ endpoints including presence, pairing, withdrawal, and refresh) beyond these generic transport endpoints. See [HARP-GW HTTP Binding](/resources/specs/gateway-http/) for the complete endpoint reference.
+
 ### 4.2 Request Rules
 
 - Requests MUST contain a valid HARP object or Envelope.
@@ -113,6 +115,8 @@ TLS is REQUIRED.
 ### 5.2 Framing
 
 Each WebSocket frame MUST contain exactly one HARP Envelope object.
+
+> **Exception:** The HARP-GW HTTP Binding defines WebSocket control messages (`hello`, `refresh.request`) that are bare JSON objects with a `msgType` field but without full Envelope structure. These are protocol-level control frames, not HARP exchange messages. See [HARP-GW HTTP Binding §5.1](/resources/specs/gateway-http/#51-hello-message) for details.
 
 Binary frames MAY be used for encrypted payloads.
 Text frames MUST contain UTF-8 JSON.

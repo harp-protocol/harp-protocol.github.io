@@ -162,6 +162,58 @@ Failure condition:
 
 ---
 
+## 2.9 Metadata Forwarding Tests
+
+- Verify routing-sensitive keys (e.g., `routingToken`) are stripped from Approval Request envelopes.
+- Verify display-safe keys (e.g., `workspaceName`, `repoName`) are forwarded to Approvers.
+- Verify missing metadata does not cause submission rejection.
+
+Failure condition:
+- Routing token exposed to Approver.
+- Display metadata missing from forwarded envelope when present in submission.
+
+---
+
+## 2.10 Exchange Withdraw Tests
+
+- Withdraw a PendingApproval exchange; verify state becomes Withdrawn.
+- Attempt to withdraw a Decided exchange; verify rejection (409 Conflict).
+- Attempt to withdraw an Expired exchange; verify rejection (409 Conflict).
+- Verify withdrawn items are removed from active Approver Inbox.
+- Attempt to submit a Decision for a Withdrawn exchange; verify rejection.
+
+Failure condition:
+- Withdrawal accepted for non-PendingApproval exchange.
+- Decision accepted for Withdrawn exchange.
+
+---
+
+## 2.11 Presence Tests
+
+- Verify online/offline status transitions after WebSocket connect/disconnect.
+- Verify TTL-based expiry marks Enforcers as offline.
+- Verify `hello` message updates presence record with capabilities and labels.
+- Verify presence data is tenant-scoped.
+
+Failure condition:
+- Presence record visible to unauthorized tenant.
+- Stale presence record persists beyond TTL.
+
+---
+
+## 2.12 Pairing Tests
+
+- Verify pairing code is single-use; second resolve attempt MUST fail.
+- Verify pairing code expiry; resolve after expiration MUST fail.
+- Verify successful pairing produces a valid `routingToken`.
+- Attempt to complete an already-completed pairing; verify conflict (409).
+- Verify pairing code has sufficient entropy (≥ 6 characters).
+
+Failure condition:
+- Pairing code reuse accepted.
+- Expired pairing code accepted.
+- Duplicate pairing completion accepted.
+
 # 3. Negative Testing Requirements
 
 Implementations MUST include negative tests for:

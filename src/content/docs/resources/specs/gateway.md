@@ -93,6 +93,8 @@ The Gateway MUST provide at least one durable inbox mechanism:
 
 Inbox items MUST be retrievable until they are acknowledged, expire, or exceed retention policy.
 
+Withdrawn exchanges MUST be removed from the active Approver Inbox.
+
 ---
 
 ## 4. State Machine
@@ -105,6 +107,7 @@ An Exchange MUST be in exactly one of the following states:
 - **Decided**: Decision accepted; awaiting delivery/ack (optional).
 - **Delivered**: Decision delivered and acknowledged by Enforcer (optional but RECOMMENDED).
 - **Expired**: Exchange expired without an accepted decision.
+- **Withdrawn**: Exchange withdrawn by Enforcer before a Decision was submitted.
 - **Cancelled**: Exchange cancelled by policy or administrative action (OPTIONAL).
 
 ### 4.2 Transitions (normative)
@@ -112,7 +115,9 @@ An Exchange MUST be in exactly one of the following states:
 - Artifact accepted ⇒ state becomes **PendingApproval**.
 - Decision accepted ⇒ state becomes **Decided**.
 - Decision delivered and acknowledged ⇒ state MAY become **Delivered**.
+- Enforcer withdraws ⇒ state becomes **Withdrawn** (only from **PendingApproval**).
 - Time > `expiresAt` and state is not **Decided** ⇒ state MUST become **Expired**.
+- **Withdrawn** MUST prevent accepting new Decisions.
 - If **Cancelled** is implemented, cancellation MUST prevent accepting new decisions.
 
 ---
@@ -163,6 +168,64 @@ Approver selection MAY be:
 The selection algorithm is out of scope; the observable requirements are:
 - Approval Requests MUST be persisted to Approver Inbox(es).
 - Approval Requests MUST be deliverable over real-time channels when available.
+
+### 6.3 Metadata Forwarding Policy
+
+When the Artifact submission includes a `metadata` object in the envelope body, the Gateway MUST apply the following forwarding rules:
+
+- **Routing-sensitive keys** (e.g., `routingToken`): MUST be stripped from Approval Request envelopes forwarded to Approvers.
+- **Display-safe keys** (e.g., `workspaceName`, `repoName`): SHOULD be forwarded to Approvers for human-friendly context.
+- Missing metadata MUST NOT cause submission rejection; the `metadata` field is OPTIONAL.
+
+> **Note:** Artifact-level metadata (inside the encrypted artifact, part of `artifactHash`) and gateway envelope `body.metadata` (cleartext, subject to forwarding) are different layers. See HARP-CORE Appendix A for clarification.
+
+### 6.4 Well-Known Metadata Keys
+
+The following well-known metadata keys are defined for interoperability:
+
+| Key | Semantics | Forwarding |
+|---|---|---|
+| `routingToken` | Opaque token binding Enforcer to Approver for delivery routing. | MUST strip (routing-sensitive) |
+| `workspaceName` | Human-readable workspace/organization name. | SHOULD forward (display-safe) |
+| `repoName` | Human-readable repository or project name. | SHOULD forward (display-safe) |
+| `enforcerLabel` | Human-readable label for the Enforcer instance. | SHOULD forward (display-safe) |
+| `tenantHint` | Opaque tenant identifier for multi-tenant routing. | MAY strip or forward per policy |
+
+Implementations MAY define additional keys. Unknown keys SHOULD be treated as display-safe unless listed as routing-sensitive by policy.
+
+### 6.5 Enforcer Presence (OPTIONAL)
+
+The Gateway MAY maintain best-effort presence information for connected Enforcers.
+
+Presence records are **informational only** and MUST NOT be used for authorization or routing decisions.
+
+A presence record SHOULD include:
+- `enforcerDeviceId` (string): REQUIRED.
+- `status` (string): `online` | `offline`.
+- `lastSeenAt` (RFC3339 datetime): REQUIRED.
+- `transport` (string): e.g., `websocket`, `poll`.
+- `workspaceName` (string): OPTIONAL.
+- `enforcerLabel` (string): OPTIONAL.
+- `capabilities` (object): OPTIONAL.
+
+Presence data SHOULD be scoped to the authenticated tenant. TTL-based expiry is RECOMMENDED for automatic offline detection.
+
+### 6.6 Pairing (RECOMMENDED)
+
+Pairing establishes a trust relationship between an Enforcer and an Approver, producing a `routingToken` for subsequent exchanges.
+
+The pairing lifecycle consists of:
+
+1. **Initiate**: Enforcer requests a pairing session. Gateway returns a short-lived, single-use pairing code and nonce.
+2. **Resolve**: Approver presents the pairing code. Gateway returns the Enforcer's identity and public key.
+3. **Complete**: Approver confirms pairing. Gateway generates a `routingToken` and binds the Enforcer-Approver pair.
+
+Requirements:
+- Pairing codes MUST be short-lived (RECOMMENDED ≤ 10 minutes).
+- Pairing codes MUST be single-use; reuse MUST be rejected.
+- Pairing codes SHOULD have sufficient entropy to resist brute-force (RECOMMENDED ≥ 6 alphanumeric characters).
+- Completing a pairing that is already completed MUST return a conflict error.
+- Out-of-band verification (e.g., visual confirmation of Enforcer label) is RECOMMENDED.
 
 ---
 
